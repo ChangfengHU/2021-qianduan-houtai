@@ -19,6 +19,8 @@ const TagSelectOption = ({ children, checked, onChange, value }) => (
 TagSelectOption.isTagSelectOption = true;
 
 class TagSelect extends Component {
+  static Option = TagSelectOption;
+
   static defaultProps = {
     hideCheckAll: false,
     actionsText: {
@@ -104,8 +106,6 @@ class TagSelect extends Component {
     node &&
     node.type &&
     (node.type.isTagSelectOption || node.type.displayName === 'TagSelectOption');
-
-  static Option = TagSelectOption;
 
   render() {
     const { value, expand } = this.state;
