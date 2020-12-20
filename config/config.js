@@ -322,7 +322,7 @@ export default defineConfig({
               ],
             },
             {
-              name: '文章管理',
+              name: 'article',
               icon: 'smile',
               path: '/article',
               component: './article'

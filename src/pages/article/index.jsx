@@ -1,12 +1,15 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Input, Drawer } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import {PlusOutlined} from '@ant-design/icons';
+import {Button, Divider, message, Input, Drawer} from 'antd';
+import React, {useState, useRef, useEffect} from 'react';
+import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryArticle, updateArticle, addArticle, removeArticle } from './service';
+import {queryArticle, updateArticle, addArticle, removeArticle} from './service';
+import {BasicList} from "@/pages/list/basic-list";
+import { connect } from 'umi';
+
 /**
  * 添加节点
  * @param fields
@@ -16,7 +19,7 @@ const handleAdd = async (fields) => {
   const hide = message.loading('正在添加');
 
   try {
-    await addArticle({ ...fields });
+    await addArticle({...fields});
     hide();
     message.success('添加成功');
     return true;
@@ -72,13 +75,29 @@ const handleRemove = async (selectedRows) => {
   }
 };
 
-const TableList = () => {
+export const TableList = (props) => {
+
+  const {
+    dispatch,
+    article,
+  } = props;
   const [createModalVisible, handleModalVisible] = useState(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef();
-  const [row, setRow] = useState();
   const [selectedRowsState, setSelectedRows] = useState([]);
+  const [row, setRow] = useState();
+  const [demo, setDemo] = useState(1);
+
+  useEffect(() => {
+    console.log(article)
+    dispatch({
+      type: 'article/queryArticle',
+      payload: {
+        count: 5,
+      },
+    },[1]);
+  });
   const columns = [
     {
       title: 'id',
@@ -101,22 +120,45 @@ const TableList = () => {
       dataIndex: 'title',
       valueType: 'textarea',
     }
-    ];
+  ];
+
+  const paginationProps = {
+    showSizeChanger: false,
+    showQuickJumper: false,
+    pageSize: 5,
+    total: 50,
+  };
+
+
   return (
     <PageContainer>
       <ProTable
         headerTitle="查询表格"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
+            <PlusOutlined/> 新建
           </Button>,
         ]}
-        request={(params, sorter, filter) => queryArticle({ ...params, sorter, filter })}
+
+        // request={(params, sorter, filter) =>
+        //   dispatch({
+        //       type: "article/queryArticle",
+        //       payload: {...params, sorter, filter}
+        //     })
+        // }
+
+        // request={(params = {}) =>
+        //   Promise.resolve({
+        //     data: props.article,
+        //   })
+        // }
+        dataSource={article}
+        pagination={paginationProps}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -220,4 +262,7 @@ const TableList = () => {
   );
 };
 
-export default TableList;
+// export default TableList;
+export default connect(({ article }) => (
+  {article: article.article}
+))(TableList);

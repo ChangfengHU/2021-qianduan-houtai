@@ -33,6 +33,8 @@ const genList = (current, pageSize) => {
 let tableListDataSource = genList(1, 100);
 
 function getArticle(req, res, u) {
+  console.log(res)
+  console.log(u)
   let realUrl = u;
 
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
