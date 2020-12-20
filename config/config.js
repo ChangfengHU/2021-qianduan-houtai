@@ -185,7 +185,12 @@ export default defineConfig({
                   name: 'card-list',
                   icon: 'smile',
                   path: '/list/card-list',
-                  component: './list/card-list',
+                  component: './list/article',
+                },{
+                  name: 'article',
+                  icon: 'smile',
+                  path: '/list/article',
+                  component: './list/article',
                 },
               ],
             },
@@ -315,6 +320,12 @@ export default defineConfig({
                   component: './editor/koni',
                 },
               ],
+            },
+            {
+              name: '文章管理',
+              icon: 'smile',
+              path: '/article',
+              component: './article'
             },
             {
               component: '404',

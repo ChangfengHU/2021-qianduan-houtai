@@ -4,11 +4,19 @@
  * so there is no configuration of the production environment
  * For details, please see
  * https://pro.ant.design/docs/deploy
+ * http://47.96.141.35/article/searchArticle
  */
 export default {
   dev: {
     '/api/': {
       target: 'https://preview.pro.ant.design',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
+    '/article/': {
+      target: 'http://47.96.141.35/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
