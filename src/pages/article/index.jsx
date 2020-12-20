@@ -106,6 +106,7 @@ export const TableList = (props) => {
       title: 'id',
       dataIndex: 'id',
       tip: 'id是唯一的 key',
+      hideInSearch:true,
       formItemProps: {
         rules: [
           {
@@ -159,8 +160,8 @@ export const TableList = (props) => {
   ];
 
   const paginationProps = {
-    // showSizeChanger: false,
-    // showQuickJumper: false,
+    showSizeChanger: true,
+    showQuickJumper: true,
     pageSize: 10,
     total: total,
   };
@@ -185,10 +186,15 @@ export const TableList = (props) => {
     <PageContainer>
       <ProTable
         headerTitle="查询表格"
-        actionRef={actionRef}
+        // actionRef={actionRef}
         rowKey="id"
+        // search={{
+        //   labelWidth: 120,
+        // }}
+
+        dateFormatter="string"
         search={{
-          labelWidth: 120,
+          filterType: 'light',
         }}
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
@@ -211,9 +217,13 @@ export const TableList = (props) => {
         dataSource={article}
         pagination={paginationProps}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
+        // rowSelection={{
+        //   onChange: (_, selectedRows) =>
+        //   {
+        //     console.log(selectedRows)
+        //     return setSelectedRows(selectedRows)}
+        //   ,
+        // }}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
