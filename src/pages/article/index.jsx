@@ -125,7 +125,7 @@ export const TableList = (props) => {
   const paginationProps = {
     showSizeChanger: false,
     showQuickJumper: false,
-    pageSize: 5,
+    pageSize: 10,
     total: 50,
   };
 
