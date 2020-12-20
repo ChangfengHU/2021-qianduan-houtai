@@ -20,8 +20,8 @@ const Model = {
     },
     *queryArticle({ payload }, { call, put }) {
 
+      console.log(payload)
       const response = yield call(queryArticle, payload);
-      console.log(response)
       yield put({
         type: 'setArticle',
         payload: response,
@@ -30,7 +30,7 @@ const Model = {
   },
   reducers: {
     setArticle(state, action) {
-      console.log(action)
+      // console.log(action)
       return { ...state, article: action.payload.value || {} };
     },
 

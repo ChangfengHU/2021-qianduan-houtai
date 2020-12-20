@@ -90,7 +90,7 @@ export const TableList = (props) => {
   const [demo, setDemo] = useState(1);
 
   useEffect(() => {
-    console.log(article)
+    // console.log(article)
     dispatch({
       type: 'article/queryArticle',
       payload: {
@@ -145,12 +145,12 @@ export const TableList = (props) => {
           </Button>,
         ]}
 
-        // request={(params, sorter, filter) =>
-        //   dispatch({
-        //       type: "article/queryArticle",
-        //       payload: {...params, sorter, filter}
-        //     })
-        // }
+        request={(params, sorter, filter) =>
+          dispatch({
+              type: "article/queryArticle",
+              payload: {...params, sorter, filter}
+            })
+        }
 
         // request={(params = {}) =>
         //   Promise.resolve({
