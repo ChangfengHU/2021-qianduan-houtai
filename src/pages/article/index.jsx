@@ -1,14 +1,15 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, message, Input, Drawer} from 'antd';
+import {Button, Divider, message, Input, Drawer,Alert, Form ,Select,Popover} from 'antd';
 import React, {useState, useRef, useEffect} from 'react';
 import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import {queryArticle, updateArticle, addArticle, removeArticle} from './service';
-import {BasicList} from "@/pages/list/basic-list";
+import {updateArticle, addArticle, removeArticle} from './service';
 import { connect } from 'umi';
+import {Util as Utils} from "@/utils/utils";
+import styles from './style.less';
 
 /**
  * 添加节点
@@ -80,6 +81,7 @@ export const TableList = (props) => {
   const {
     dispatch,
     article,
+    total,
   } = props;
   const [createModalVisible, handleModalVisible] = useState(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
@@ -89,15 +91,16 @@ export const TableList = (props) => {
   const [row, setRow] = useState();
   const [demo, setDemo] = useState(1);
 
-  useEffect(() => {
-    // console.log(article)
-    dispatch({
-      type: 'article/queryArticle',
-      payload: {
-        count: 5,
-      },
-    },[1]);
-  });
+  // useEffect(() => {
+  //   // console.log(article)
+  //   dispatch({
+  //     type: 'article/queryArticle',
+  //     payload: {
+  //       pageSize: 10,
+  //       current: 1,
+  //     },
+  //   },[1]);
+  // });
   const columns = [
     {
       title: 'id',
@@ -119,16 +122,64 @@ export const TableList = (props) => {
       title: '文章标题',
       dataIndex: 'title',
       valueType: 'textarea',
+    },
+    {
+      title: '文章内容',
+      dataIndex: 'content',
+      // valueType: 'textarea',
+      render: (dom, entity) => {
+        console.log(dom)
+        console.log(entity)
+        let content=entity.content
+        content=formatContentHeader(content)
+        if (content) {
+          let html = Utils.unEscape(content);
+          const popover = (
+
+            <span className="articleCard" style={{position:"relative",left:100}}>
+             <div className={styles.EditView1} style={{position:"absolute",zIndex:10,height:447}} dangerouslySetInnerHTML={{__html:content.trim()}}></div>
+              {<img src="https://articel.oss-cn-hangzhou.aliyuncs.com/iphon.png" alt="" style={{zIndex:1,  width: '60%' }} />}
+            </span>
+
+          )
+          return (
+            <div >
+              <Popover style={{zIndex:1,  width: '60%' }}   trigger="click" placement="topLeft" content={popover}>
+                {html && html.length > 300 ? html.substring(0, 80) + "..." : html}
+              </Popover>
+            </div>
+
+          )
+          // trigger="click"
+        } else {
+          return content;
+        }
+      }
     }
   ];
 
   const paginationProps = {
-    showSizeChanger: false,
-    showQuickJumper: false,
+    // showSizeChanger: false,
+    // showQuickJumper: false,
     pageSize: 10,
-    total: 50,
+    total: total,
   };
 
+//格式化代码   Ctrl+Alt+l  <p>&nbsp;</p>
+  const formatContentHeader = (content) => {
+    if (!content){
+      return content
+    }
+    if (content.startsWith("<p>&nbsp;</p>")){
+      content=content.substring(13,content.length).trim()
+      return formatContentHeader(content)
+    }
+    if (content && (content.startsWith("<p></p>"))){
+      content=content.substring(7,content.length).trim()
+      return formatContentHeader(content)
+    }
+    return content
+  }
 
   return (
     <PageContainer>
@@ -144,7 +195,7 @@ export const TableList = (props) => {
             <PlusOutlined/> 新建
           </Button>,
         ]}
-
+        bordered
         request={(params, sorter, filter) =>
           dispatch({
               type: "article/queryArticle",
@@ -264,5 +315,8 @@ export const TableList = (props) => {
 
 // export default TableList;
 export default connect(({ article }) => (
-  {article: article.article}
+  {
+    article: article.article,
+    total: article.total
+  }
 ))(TableList);

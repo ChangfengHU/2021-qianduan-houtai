@@ -5,8 +5,10 @@ const Model = {
   state: {
     article: [{
       id:1,
-      title:"123"
+      title:"123",
+      content:"22222"
     }],
+    total:50
 
   },
   effects: {
@@ -19,8 +21,7 @@ const Model = {
       });
     },
     *queryArticle({ payload }, { call, put }) {
-
-      console.log(payload)
+      payload.currentPage=payload.current
       const response = yield call(queryArticle, payload);
       yield put({
         type: 'setArticle',
@@ -31,7 +32,7 @@ const Model = {
   reducers: {
     setArticle(state, action) {
       // console.log(action)
-      return { ...state, article: action.payload.value || {} };
+      return { ...state, article: action.payload.value || [],total:action.payload.total };
     },
 
     changeNotifyCount(state = {}, action) {
