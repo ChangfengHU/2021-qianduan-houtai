@@ -5,10 +5,9 @@ export async function queryArticle(params) {
     params,
   });
 }
-export async function removeArticle(params) {
-  return request('/api/article', {
-    method: 'POST',
-    data: { ...params, method: 'delete' },
+export async function queryArticleById(params) {
+  return request('queryArticleById', {
+    params,
   });
 }
 export async function addArticle(params) {

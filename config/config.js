@@ -324,8 +324,24 @@ export default defineConfig({
             {
               name: 'article',
               icon: 'smile',
-              path: '/article',
-              component: './article'
+              path: '/',
+
+              routes: [
+                {
+                  name: 'article',
+                  icon: 'smile',
+                  path: '/article',
+                  component: './article',
+                },
+                {
+                  // name: 'flow',
+                  // icon: 'smile',
+                  path: '/article/:articleId',
+                  component: './article/articleView'
+                },
+
+              ],
+
             },
             {
               component: '404',

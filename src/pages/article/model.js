@@ -1,4 +1,5 @@
 import { queryArticle} from './service';
+import {queryArticleById} from "@/pages/article/service";
 
 const Model = {
   namespace: 'article',
@@ -8,6 +9,10 @@ const Model = {
       title:"123",
       content:"22222"
     }],
+
+    articleInfo:{
+      content:1212,
+    },
     total:50
 
   },
@@ -28,11 +33,22 @@ const Model = {
         payload: response,
       });
     },
+    *queryById({ payload }, { call, put }) {
+      const response = yield call(queryArticleById, payload);
+      yield put({
+        type: 'setArticleInfo',
+        payload: response,
+      });
+    },
   },
   reducers: {
     setArticle(state, action) {
       // console.log(action)
       return { ...state, article: action.payload.value || [],total:action.payload.total };
+    },
+    setArticleInfo(state, action) {
+      // console.log(action)
+      return { ...state, articleInfo: action.payload.value };
     },
 
     changeNotifyCount(state = {}, action) {

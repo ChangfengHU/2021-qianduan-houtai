@@ -10,7 +10,7 @@ import {updateArticle, addArticle, removeArticle} from './service';
 import { connect } from 'umi';
 import {Util as Utils} from "@/utils/utils";
 import styles from './style.less';
-
+import { history } from 'umi';
 /**
  * 添加节点
  * @param fields
@@ -129,8 +129,8 @@ export const TableList = (props) => {
       dataIndex: 'content',
       // valueType: 'textarea',
       render: (dom, entity) => {
-        console.log(dom)
-        console.log(entity)
+        // console.log(dom)
+        // console.log(entity)
         let content=entity.content
         content=formatContentHeader(content)
         if (content) {
@@ -156,7 +156,40 @@ export const TableList = (props) => {
           return content;
         }
       }
-    }
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      // key: 'action',
+      width: 180,
+      render: (_, record) => (
+
+        <>
+          <a
+            onClick={() => {
+              handleUpdateModalVisible(true);
+
+
+              setStepFormValues(record);
+            }}
+          >
+            查看文章
+          </a>
+          <Divider type="vertical" />
+
+          <Button type="primary" onClick={() => {
+            console.log(record)
+            const id = record.id;
+            history.push(`article/${id}`);
+            // history.push('/articleView/${id}')}
+          }
+          }>
+            Back Home
+          </Button>
+        </>
+      ),
+    },
   ];
 
   const paginationProps = {
