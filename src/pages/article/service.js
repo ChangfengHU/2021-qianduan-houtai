@@ -6,7 +6,7 @@ export async function queryArticle(params) {
   });
 }
 export async function queryArticleById(params) {
-  return request('queryArticleById', {
+  return request('article/queryArticleById', {
     params,
   });
 }

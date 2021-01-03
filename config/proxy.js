@@ -16,7 +16,7 @@ export default {
       },
     },
     '/article/': {
-      target: 'http://47.97.167.185/',
+      target: 'http://47.96.141.35/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

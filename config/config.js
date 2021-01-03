@@ -11,7 +11,7 @@ export default defineConfig({
     hmr: true,
   },
   history: {
-    type: 'browser',
+    type: 'hash',
   },
   locale: {
     // default zh-CN
@@ -324,21 +324,22 @@ export default defineConfig({
             {
               name: 'article',
               icon: 'smile',
-              path: '/',
+              path: '/article',
 
               routes: [
-                {
-                  name: 'article',
-                  icon: 'smile',
-                  path: '/article',
-                  component: './article',
-                },
                 {
                   // name: 'flow',
                   // icon: 'smile',
                   path: '/article/:articleId',
                   component: './article/articleView'
                 },
+                {
+                  name: 'article',
+                  icon: 'smile',
+                  path: '/article',
+                  component: './article',
+                },
+
 
               ],
 
